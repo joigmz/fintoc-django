@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Payment{% endblock title %}
+
+{% block content %}
+
+<!-- component -->
+<div class="flex h-screen items-center justify-center bg-indigo-50 px-4">
+    <div class="max-w-sm overflow-hidden rounded-xl bg-white shadow-md duration-200 hover:scale-105 hover:shadow-xl">
+      <img src="https://i.imgur.com/5dmBrx6.jpg" alt="plant" class="h-auto w-full" />
+      <div class="p-5">
+        <h1 class='font-bold text-xl'>${{price|intcomma}}</h1>
+        <p class="text-medium mb-5 text-gray-700">Well, aren't you going up to the lake tonight, you've been planning it for two weeks.</p>
+        <button class="w-full rounded-md bg-indigo-600  py-2 text-indigo-100 hover:bg-indigo-500 hover:shadow-md duration-75">Pay</button>
+      </div>
+    </div>
+  </div>
+
+<script src="https://js.fintoc.com/v1/"></script>
+<script>
+  function onSuccess() {
+    console.log('Transacción exitosa');
+    location.reload()
+  }
+  function onExit() {
+    console.log('Transacción abortada');
+    location.reload()
+
+  }
+  function onEvent() {
+    console.log('Estan pasando cosaaaaas');
+  }
+
+  window.onload = function() {
+    const widget = Fintoc.create({
+      holderType: "{{holderType}}",
+      product: "{{product}}",
+      publicKey: "{{publicKey}}",
+      webhookUrl: "{{webhookUrl}}",
+      widgetToken: "{{widgetToken}}",
+      country: "{{country}}",
+      institutionId: "{{institutionId}}",
+      onSuccess: onSuccess,
+      onExit: onExit,
+      onEvent: onEvent,
+    });
+    const button = document.querySelector('button');
+    button.addEventListener('click', function() {
+      widget.open();
+    });
+  };
+</script>
+
+{% endblock content %}
