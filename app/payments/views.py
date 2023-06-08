@@ -8,21 +8,17 @@ from config.settings import SK_FINTOC, PK_FINTOC
 def payments(request):
     price = random.randint(100,10000)
     fintoc_client = Fintoc(SK_FINTOC)
-    
-
 
     payment_intent = fintoc_client.payment_intents.create(
         currency="CLP",
         amount=price,
         recipient_account={
             "holder_id": "111111111",
-            "number": "123123123",
+            "number": "123456789",
             "type": "checking_account",
             "institution_id": "cl_banco_de_chile",
         }
     )
-
-
 
     context = {
         'holderType':'individual',
@@ -33,5 +29,6 @@ def payments(request):
         'widgetToken':payment_intent.widget_token,
         'price': price
     }
+
 
     return render(request, "payments.html", context=context)
